@@ -1,4 +1,5 @@
-import { AxiosResponse, AxiosStatic } from 'axios';
+import { AxiosStatic } from 'axios';
+import { InternalError } from '@src/util/errors/internal-error';
 
 export interface StormGlassPointSource {
   [key: string]: number;
@@ -30,6 +31,22 @@ export interface ForecastPoint {
   windSpeed: number;
 }
 
+export class ClientRequestError extends InternalError {
+  constructor(message: string) {
+    const internalMessage =
+      'Unexpected error when trying to comunicate to StormGlass';
+    super(`${internalMessage}: ${message}`);
+  }
+}
+
+export class StormGlassResponseError extends InternalError {
+  constructor(message: string) {
+    const internalMessage =
+      'Unexpected error returned by the StormGlass service';
+    super(`${internalMessage}: ${message}`);
+  }
+}
+
 export class StormGlass {
   readonly stormGlassAPIParams =
     'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
@@ -37,13 +54,22 @@ export class StormGlass {
   constructor(protected request: AxiosStatic) {}
 
   public async fetchPoints(lat: number, lng: number): Promise<ForecastPoint[]> {
-    const url = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&end=1712000133498`;
-    const response = await this.request.get<StormGlassForecastResponse>(url, {
-      headers: {
-        Authorization: 'fake-token'
+    try {
+      const url = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&end=1712000133498`;
+      const response = await this.request.get<StormGlassForecastResponse>(url, {
+        headers: {
+          Authorization: 'fake-token',
+        },
+      });
+      return this.normalizeResponse(response.data);
+    } catch (error: any) {
+      if (error?.response?.data && error?.response?.status) {
+        throw new StormGlassResponseError(
+          `Error: ${JSON.stringify(error.response.data)} Code: ${error.response.status}`
+        );
       }
-    });
-    return this.normalizeResponse(response.data)
+      throw new ClientRequestError(error.message);
+    }
   }
 
   private normalizeResponse(
