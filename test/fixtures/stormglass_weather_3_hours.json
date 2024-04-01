@@ -19,6 +19,9 @@
       },
       "windDirection": {
         "noaa": 290.63
+      },
+      "windSpeed": {
+        "noaa": 14.00
       }
     },
     {
@@ -40,6 +43,9 @@
       },
       "windDirection": {
         "noaa": 282.71
+      },
+      "windSpeed": {
+        "noaa": 14.00
       }
     },
     {
@@ -61,27 +67,9 @@
       },
       "windDirection": {
         "noaa": 274.8
-      }
-    },
-    {
-      "swellDirection": {
-        "noaa": 232.22
       },
-      "swellHeight": {
-        "noaa": 0.13
-      },
-      "swellPeriod": {
-        "noaa": 18.07
-      },
-      "time": "2024-04-01T03:00:00+00:00",
-      "waveDirection": {
-        "noaa": 254.46
-      },
-      "waveHeight": {
-        "noaa": 5.92
-      },
-      "windDirection": {
-        "noaa": 266.88
+      "windSpeed": {
+        "noaa": 14.00
       }
     }
   ],
