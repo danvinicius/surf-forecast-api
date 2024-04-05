@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import moongoose, { Document, Model } from 'mongoose';
 
 export enum BeachPosition {
   S = 'S',
@@ -16,7 +15,7 @@ export interface Beach {
   lng: number;
 }
 
-const schema = new moongoose.Schema<Beach>(
+const schema = new mongoose.Schema<Beach>(
   {
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
