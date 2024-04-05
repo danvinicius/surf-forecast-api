@@ -16,7 +16,7 @@ export interface Beach {
   lng: number;
 }
 
-const schema = new moongoose.Schema(
+const schema = new moongoose.Schema<Beach>(
   {
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
