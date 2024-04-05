@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import mongoose, { Mongoose } from 'mongoose';
 
 @Controller('beaches')
-export class BeachController {
+export class BeachesController {
   @Post('')
   public async create(req: Request, res: Response): Promise<void> {
     try {
