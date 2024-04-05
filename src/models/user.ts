@@ -7,6 +7,10 @@ export interface User {
   password: string;
 }
 
+export enum CUSTOM_VALIDATION {
+  DUPLICATED = 'DUPLICATED',
+}
+
 const schema = new mongoose.Schema<User>(
   {
     name: {
@@ -16,7 +20,7 @@ const schema = new mongoose.Schema<User>(
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
@@ -34,4 +38,13 @@ const schema = new mongoose.Schema<User>(
   }
 );
 
-export const User = mongoose.model('User', schema)
+schema.path('email').validate(
+  async (email: string) => {
+    const emailCount = await mongoose.models.User.countDocuments({ email });
+    return !emailCount;
+  },
+  'already exists in the database.',
+  CUSTOM_VALIDATION.DUPLICATED
+);
+
+export const User = mongoose.model('User', schema);
