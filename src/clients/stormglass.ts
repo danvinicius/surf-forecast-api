@@ -60,7 +60,7 @@ export class StormGlass {
 
   public async fetchPoints(lat: number, lng: number): Promise<ForecastPoint[]> {
     try {
-      const url = `${stormGlassResourceConfig.get('apiUrl')}/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&end=1712000133498`;
+      const url = `${stormGlassResourceConfig.get('apiUrl')}/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&end=1712934017954`;
       const response = await this.request.get<StormGlassForecastResponse>(url, {
         headers: {
           Authorization: stormGlassResourceConfig.get('apiToken'),
